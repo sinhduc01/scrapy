@@ -24,13 +24,13 @@ ITEM_PIPELINES = {
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 # Desired file format   
-FEED_FORMAT = "csv"
-FEED_URI = 'baodautu.csv'
+# FEED_FORMAT = "csv"
+# FEED_URI = 'baodautu.csv'
 
 # Name of the file where
 # data extracted is stored
 # FEED_URI = "baodautu.json"
-FEED_ENCODING = 'utf8'
+# FEED_ENCODING = 'utf8'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

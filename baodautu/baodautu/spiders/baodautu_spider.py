@@ -7,7 +7,7 @@ from baodautu.items import BaodautuItem
 class BaoDauTuSpider(scrapy.Spider):
     name = "baodautu_spider"
     allowed_domains = ['baodautu.vn']
-    start_urls = ['https://baodautu.vn/thoi-su-d1/']
+    start_urls = ['https://baodautu.vn/']
     def parse(self, response):
         for link in response.css('.main_content a::attr(href)'):
             yield response.follow(link.get(), callback=self.parse_content)
