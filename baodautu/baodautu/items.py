@@ -10,4 +10,6 @@ class BaodautuItem(Item):
     title = Field()
     content = Field()
     date = Field()
+    category = Field()
     url = Field()
+

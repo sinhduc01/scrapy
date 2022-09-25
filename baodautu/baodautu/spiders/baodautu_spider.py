@@ -14,9 +14,12 @@ class BaoDauTuSpider(scrapy.Spider):
 
     def parse_content(self, response):
         item = BaodautuItem()
-        item['title'] = response.xpath('.//div[@class="title-detail"]/text()').get(),
-        item['date'] = response.xpath('.//span[@class="post-time"]/text()').get(),
-        item['content'] = response.xpath('.//div[@id="content_detail_news"]/p/text()').getall(),
-        item['url'] = response.request.url
+        posts = response.css('.div.col630')
+        for post in posts:
+            item['title'] = post.css('div.title-detail::text').get().strip(),
+            item['date'] = post.css('span.post-time::text').get().strip(),
+            item['content'] = post.css('#content_detail_news p::text').getall().strip(),
+            item['category'] = post.css('div.fs16 a::text').get(),
+            item['url'] = post.css.url,
         yield item
 

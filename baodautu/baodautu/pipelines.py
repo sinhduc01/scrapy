@@ -29,6 +29,7 @@ class BaodautuPipeline:
             title text,
             date text,
             content text,
+            category text,
             url text,
             PRIMARY KEY (id)
         )
@@ -39,11 +40,12 @@ class BaodautuPipeline:
     def process_item(self, item, spider):
 
         ## Define insert statement
-        self.cur.execute(""" insert into baodautu (title, date, content, url) values (%s,%s,%s,%s)""", (
-            str(item["title"]),
-            str(item["date"]),
-            str(item["content"]),
-            str(item["url"])
+        self.cur.execute(""" insert into baodautu (title, date, content, category, url) values (%s,%s,%s,%s,%s)""", (
+            item["title"],
+            item["date"],
+            item["content"],
+            item["category"],
+            item["url"]
         ))
 
         ## Execute insert of data into database
@@ -73,6 +75,7 @@ class BaodautuNoDuplicatesPipeline:
             title text,
             date text,
             content text,
+            category text,
             url text,
             PRIMARY KEY (id)
         )
@@ -86,10 +89,11 @@ class BaodautuNoDuplicatesPipeline:
         else:
 
             ## Define insert statement
-            self.cur.execute(""" insert into baodautu (title, date, content, url) values (%s,%s,%s,%s)""", (
+            self.cur.execute(""" insert into baodautu (title, date, content, category, url) values (%s,%s,%s,%s,%s)""", (
                 item["title"],
                 item["date"],
                 item["content"],
+                item["category"],
                 item["url"]
             ))
 
