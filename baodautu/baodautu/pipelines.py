@@ -26,11 +26,12 @@ class BaodautuPipeline:
         self.cur.execute("""
         CREATE TABLE IF NOT EXISTS baodautu(
             id int NOT NULL auto_increment, 
-            title text,
-            date text,
-            content text,
-            category text,
-            url text,
+            title TEXT,
+            date TEXT,
+            content TEXT,
+            url TEXT,
+            category TEXT,
+            image TEXT,
             PRIMARY KEY (id)
         )
         """)
@@ -40,12 +41,13 @@ class BaodautuPipeline:
     def process_item(self, item, spider):
 
         ## Define insert statement
-        self.cur.execute(""" insert into baodautu (title, date, content, category, url) values (%s,%s,%s,%s,%s)""", (
+        self.cur.execute(""" insert into baodautu (title, date, content, category, url, image) values (%s,%s,%s,%s,%s,%s) """, (
             item["title"],
-            item["date"],
+            str(item["date"]),
             item["content"],
             item["category"],
-            item["url"]
+            item["url"],
+            item["image"]
         ))
 
         ## Execute insert of data into database
@@ -58,52 +60,36 @@ class BaodautuPipeline:
         self.cur.close()
         self.conn.close()
 
-class BaodautuNoDuplicatesPipeline:
+class BaodautuWPPipeline:
+
     def __init__(self):
         self.conn = mysql.connector.connect(
             host = 'localhost',
             user = 'root',
             password = '',
-            database = 'baodautudb',
+            database = 'bitnami_wordpress',
         )
 
+        ## Create cursor, used to execute commands
         self.cur = self.conn.cursor()
 
-        self.cur.execute("""
-        CREATE TABLE IF NOT EXISTS baodautu(
-            id int NOT NULL auto_increment, 
-            title text,
-            date text,
-            content text,
-            category text,
-            url text,
-            PRIMARY KEY (id)
-        )
-        """)
-
     def process_item(self, item, spider):
-        self.cur.execute("select * from baodautu where title = %s", (item['title'],))
-        result = self.cur.fetchone()
-        if result:
-            spider.logger.warn("Item already in database: %s" % item['title'])
-        else:
 
-            ## Define insert statement
-            self.cur.execute(""" insert into baodautu (title, date, content, category, url) values (%s,%s,%s,%s,%s)""", (
-                item["title"],
-                item["date"],
-                item["content"],
-                item["category"],
-                item["url"]
-            ))
+        ## Define insert statement
+        self.cur.execute(""" insert into wp_posts (post_title, post_content) values (%s,%s) """, (
+            item["title"],
+            item["content"],
+        ))
 
+        ## Execute insert of data into database
+        self.conn.commit()
 
-            self.conn.commit()
-        return item
-
+    
     def close_spider(self, spider):
 
+        ## Close cursor & connection to database 
         self.cur.close()
         self.conn.close()
+
 
 

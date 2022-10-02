@@ -3,6 +3,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
+
 from scrapy.item import Item, Field
 
 
@@ -12,4 +13,6 @@ class BaodautuItem(Item):
     date = Field()
     category = Field()
     url = Field()
+    image_urls = Field()
+    image = Field()
 
