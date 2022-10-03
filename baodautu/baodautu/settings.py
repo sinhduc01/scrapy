@@ -14,8 +14,8 @@ NEWSPIDER_MODULE = 'baodautu.spiders'
 
 ITEM_PIPELINES = {
    # 'baodautu.pipelines.BaodautuPipeline': 300,
-   'scrapy.pipelines.images.ImagesPipeline': 1,
-   'baodautu.pipelines.BaodautuWPPipeline': 300,
+   # 'scrapy.pipelines.images.ImagesPipeline': 1,
+   # 'baodautu.pipelines.BaodautuWPPipeline': 300,
 }
 
 IMAGES_STORE = 'images'
