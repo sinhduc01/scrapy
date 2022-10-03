@@ -8,6 +8,31 @@
 from typing_extensions import Self
 from itemadapter import ItemAdapter
 import mysql.connector
+import scrapy
+from scrapy.exceptions import DropItem
+from scrapy.pipelines.images import ImagesPipeline
+
+class CustomImagePipeline(ImagesPipeline):
+    def file_path(self, request, response=None, info=None, *, item=None):
+        request.url.split('/')[-1]
+
+
+
+class MyImagesPipeline(ImagesPipeline):
+
+    def get_media_requests(self, item, info):
+        for image_url in item['image_urls']:
+            yield scrapy.Request(image_url)
+
+    def item_completed(self, results, item, info):
+        image_paths = [x['path'] for ok, x in results if ok]
+        if not image_paths:
+            raise DropItem("Item contains no images")
+        adapter = ItemAdapter(item)
+        adapter['image_paths'] = image_paths
+        return item
+
+
 
 class BaodautuPipeline:
 
@@ -90,6 +115,5 @@ class BaodautuWPPipeline:
         ## Close cursor & connection to database 
         self.cur.close()
         self.conn.close()
-
 
 

@@ -14,7 +14,8 @@ NEWSPIDER_MODULE = 'baodautu.spiders'
 
 ITEM_PIPELINES = {
    # 'baodautu.pipelines.BaodautuPipeline': 300,
-   # 'scrapy.pipelines.images.ImagesPipeline': 1,
+   # 'baodautu.pipelines.CustomImagePipeline': 1,
+   # 'baodautu.pipelines.MyImagesPipeline': 300
    # 'baodautu.pipelines.BaodautuWPPipeline': 300,
 }
 
@@ -65,15 +66,15 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-SPIDER_MIDDLEWARES = {
-   'baodautu.middlewares.BaodautuSpiderMiddleware': 543,
-}
+# SPIDER_MIDDLEWARES = {
+#    'baodautu.middlewares.BaodautuSpiderMiddleware': 543,
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-   'baodautu.middlewares.BaodautuDownloaderMiddleware': 543,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#    'baodautu.middlewares.BaodautuDownloaderMiddleware': 543,
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
