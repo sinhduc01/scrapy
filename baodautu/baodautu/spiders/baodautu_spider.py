@@ -8,7 +8,7 @@ from wordpress_xmlrpc.methods.posts import GetPosts, NewPost
 from wordpress_xmlrpc.methods.users import GetUserInfo
 from wordpress_xmlrpc.methods import media, posts
 from wordpress_xmlrpc.compat import xmlrpc_client
-
+import os
 import requests # request img from web
 import shutil # save img locally
 
@@ -102,6 +102,7 @@ class BaoDauTuSpider(CrawlSpider):
         # }
         attachment_id = response['id']
         post.thumbnail = attachment_id
+        os.remove(f"{item['title']}.png")
         wp.call(NewPost(post))
         return item
 
