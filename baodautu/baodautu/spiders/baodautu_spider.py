@@ -25,6 +25,11 @@ wp.call(GetUserInfo())
 
 
 
+def listToString(s):
+    str1 = ""
+    for ele in s:
+        str1 += ele
+    return str1
 
 def strip_value(value):
     m = re.search("http[^\s]+(\s)*h?(http[^\s>]+)(\s)*", value)
@@ -62,8 +67,8 @@ class BaoDauTuSpider(CrawlSpider):
         item['title'] = response.xpath("//div[@class='title-detail']/text()").get().strip() 
         item['image_urls'] = {response.xpath("//div[@id='content_detail_news']//img/@src").get()}
         item['image'] = response.xpath("//div[@id='content_detail_news']/table[@class='MASTERCMS_TPL_TABLE'][1]//img/@src").get()
-        list_p = response.xpath("//div[@id='content_detail_news']//p//text()").getall()
-        item['content'] = str(list_p)
+        list_p = response.xpath("//div[@id='content_detail_news']//p").getall()
+        item['content'] = listToString(list_p)
         item['date'] = response.xpath("//span[@class='post-time']/text()").get().strip().replace("-", "")
         item['url'] = response.request.url
 
