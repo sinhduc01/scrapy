@@ -8,13 +8,15 @@ from wordpress_xmlrpc.methods.posts import GetPosts, NewPost
 from wordpress_xmlrpc.methods.users import GetUserInfo
 from wordpress_xmlrpc.methods import media, posts
 from wordpress_xmlrpc.compat import xmlrpc_client
+import urllib
 import os
+
 import requests # request img from web
 import shutil # save img locally
-
+from PIL import Image
 from os.path import splitext
 
-
+output_dir = '/images'
 
 
 wp = Client('http://localhost/wordpress/xmlrpc.php', 'user', 'mfOd Ol6M rLFS QLYK Y7JL KoTA')
@@ -59,7 +61,7 @@ class BaoDauTuSpider(CrawlSpider):
         item['category'] = response.xpath("//div[@class='fs16 text-uppercase ']/a/text()").get().strip()
         item['title'] = response.xpath("//div[@class='title-detail']/text()").get().strip() 
         item['image_urls'] = {response.xpath("//div[@id='content_detail_news']//img/@src").get()}
-        item['image'] = response.xpath("//div[@id='content_detail_news']//img/@src").get()
+        item['image'] = response.xpath("//div[@id='content_detail_news']/table[@class='MASTERCMS_TPL_TABLE'][1]//img/@src").get()
         list_p = response.xpath("//div[@id='content_detail_news']//p//text()").getall()
         item['content'] = str(list_p)
         item['date'] = response.xpath("//span[@class='post-time']/text()").get().strip().replace("-", "")
@@ -76,12 +78,9 @@ class BaoDauTuSpider(CrawlSpider):
             'category': [item['category']]
         }
         # print("===============" + image_filename)
-        res = requests.get(item['image'])
-        if res.status_code:
-            fp = open(f'{item["title"]}.png', 'wb')
-            fp.write(res.content)
-            fp.close()
-
+        r = requests.get(item['image'])
+        with open(f"{item['title']}.png",'wb') as f:
+             f.write(r.content)
         # set to the path to your file
         filename = f"D:\\GitHUB\\scrapy\\baodautu\\{item['title']}.png"
 
